@@ -2,6 +2,7 @@ import hashlib
 import hmac
 import json
 import logging
+import random
 from typing import Any, Dict
 
 from hummingbot.connector.time_synchronizer import TimeSynchronizer
@@ -82,7 +83,9 @@ class XeggexAuth():
         Generates authentication headers required by Xeggex
         :return: a dictionary of auth headers
         """
-        nonce = int(self.time_provider.time() * 1e3)
+        noncetime = int(self.time_provider.time() * 1e3)
+        randnonce = random.randrange(1000, 9999)
+        none = int(str(noncetime) + str(randnonce))
         signature = self.generate_signature(method, url, nonce, params)
         headers = {
             "Content-Type": "application/json",
